@@ -1,17 +1,11 @@
-cmake_minimum_required(VERSION 3.26)
-project(cmake_cpp20_modules CXX)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+project(learn_opengl)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${PROJECT_SOURCE_DIR}/cmake/external)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-include(cxx_modules_rules)
+option( BUILD_EXAMPLES "Build examples" ON )
 
-add_subdirectory(src)
+add_subdirectory(base)
+add_subdirectory(examples)
