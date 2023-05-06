@@ -10,14 +10,21 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [windows-2022]
-        platform: [x64]
-        toolset: [v143]
+        os: [windows-2019]
+        platform: [Win32, x64]
+        toolset: [v142]
         standard: [20]
         shared: ["", -DBUILD_SHARED_LIBS=OFF]
         build_type: [Debug, Release]
         exclude:
+            - { platform: Win32, standard: 20 }
             - { platform: x64, standard: 20, shared: -DBUILD_SHARED_LIBS=OFF }
+        include:
+          - os: windows-2022
+            platform: x64
+            toolset: v143
+            build_type: Debug
+            standard: 20
     steps:
     - uses: actions/checkout@v3
       with:
@@ -30,7 +37,7 @@ jobs:
       shell: bash
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake -Wno-dev -A ${{matrix.platform}} -T ${{matrix.toolset}} \
+        cmake -A ${{matrix.platform}} -T ${{matrix.toolset}} \
               -DCMAKE_CXX_STANDARD=${{matrix.standard}} \
               ${{matrix.shared}} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
               $GITHUB_WORKSPACE
