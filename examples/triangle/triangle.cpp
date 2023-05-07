@@ -26,7 +26,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 int main()
 {
     // Create a window
-    Window window("triangle", 1080, 720, true);
+    Window window("triangle", 800, 600, true);
 
     // Set callbacks
 	window.set_key_callback([&](int key, int action) noexcept {
@@ -36,18 +36,18 @@ int main()
     });
 
     // Create Vertex Array Object
-    GLuint vertexArrayID;
-    // Generate 1 vertex array and put the resulting identifier in vertexArrayID
-    glGenVertexArrays(1, &vertexArrayID);
+    GLuint VAO;
+    // Generate 1 vertex array and put the resulting identifier in VAO
+    glGenVertexArrays(1, &VAO);
     // Bind our Vertex Array ID first, then bind and set our buffers and pointers.
-    glBindVertexArray(vertexArrayID);
+    glBindVertexArray(VAO);
 
     // This will identify our vertex buffer
-    GLuint vertexBuffer;
-    // Generate 1 buffer, put the resulting identifier in vertexbuffer
-    glGenBuffers(1, &vertexBuffer);
-    // The following commands will talk about our 'vertexbuffer' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    GLuint VBO;
+    // Generate 1 buffer, put the resulting identifier in VBO
+    glGenBuffers(1, &VBO);
+    // The following commands will talk about our 'VBO' buffer
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     // Give our vertices to OpenGL.
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
@@ -81,33 +81,28 @@ int main()
     // Use our shader
     glUseProgram(shaderProgramID);
 
+    // 1st attribute buffer : vertices
+    glEnableVertexAttribArray(0);
+    // Give our vertices to OpenGL.
+    glVertexAttribPointer(
+        0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+        3,                  // size
+        GL_FLOAT,           // type
+        GL_FALSE,           // normalized?
+        0,                  // stride
+        (void*)0            // array buffer offset
+    );
+    
 	window.run([&]{
-        glBindVertexArray(vertexArrayID);
-
-        // 1st attribute buffer : vertices
-        glEnableVertexAttribArray(0);
-        // Bind our vertex buffer
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-        // Give our vertices to OpenGL.
-        glVertexAttribPointer(
-            0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-            3,                  // size
-            GL_FLOAT,           // type
-            GL_FALSE,           // normalized?
-            0,                  // stride
-            (void*)0            // array buffer offset
-        );
-
+        glBindVertexArray(VAO);
         // Draw the triangle !
         glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-        // No need to unbind at all as we directly bind a different VAO the next few lines
-        glDisableVertexAttribArray(0);
     });
 
     // Cleanup VBO and shader
     glDeleteProgram(shaderProgramID);
-    glDeleteBuffers(1, &vertexBuffer);
-    glDeleteVertexArrays(1, &vertexArrayID);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 
 	return 0;
 }

@@ -10,6 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(base STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/window.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp
 )
 
 target_include_directories(base PUBLIC
