@@ -22,6 +22,7 @@ endfunction(buildExample)
 set(EXAMPLES
     triangle
     shaders
+    textures
 )
 
 # Function for building single example
