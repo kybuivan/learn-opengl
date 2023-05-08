@@ -15,7 +15,7 @@ class GLFWContext;
 
 class Window {
 public:
-    using MouseButtonCallback = std::function<void(int /* button */, int /* action */, float /* x */, float /* y */)>;
+    using MouseCallback = std::function<void(float /* x */, float /* y */)>;
     using CursorPositionCallback = std::function<void(int /* x*/, int /* y */)>;
     using WindowSizeCallback = std::function<void(int /* width*/, int /* height */)>;
     using KeyCallback = std::function<void(int /* key */, int /* action */)>;
@@ -35,7 +35,7 @@ public:
     [[nodiscard]] auto handle() const noexcept { return _handle; }
     [[nodiscard]] explicit operator bool() const noexcept { return !should_close(); }
 
-    Window &set_mouse_callback(MouseButtonCallback cb) noexcept;
+    Window &set_mouse_callback(MouseCallback cb) noexcept;
     Window &set_cursor_position_callback(CursorPositionCallback cb) noexcept;
     Window &set_window_size_callback(WindowSizeCallback cb) noexcept;
     Window &set_key_callback(KeyCallback cb) noexcept;
@@ -79,7 +79,7 @@ private:
     //std::shared_ptr<GLFWContext> _context;
     GLFWwindow *_handle{nullptr};
     //mutable std::unique_ptr<GLTexture> _texture;
-    MouseButtonCallback _mouse_button_callback;
+    MouseCallback _mouse_callback;
     CursorPositionCallback _cursor_position_callback;
     WindowSizeCallback _window_size_callback;
     KeyCallback _key_callback;

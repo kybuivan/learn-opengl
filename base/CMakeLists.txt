@@ -14,6 +14,7 @@ add_library(base STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/window.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/texture.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp
 )
 
 target_include_directories(base PUBLIC

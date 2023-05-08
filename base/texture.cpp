@@ -2,11 +2,9 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-Texture::Texture(const char* path)
+Texture::Texture(const char *path)
 {
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -24,20 +22,31 @@ Texture::Texture(const char* path)
 
     // Load image, create texture and generate mipmaps
     int width, height, nrChannels;
-    unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
-    if(data) {
+    unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
+    if (data)
+    {
         GLenum format;
-        if(nrChannels == 1) {
+        if (nrChannels == 1)
+        {
             format = GL_RED;
-        } else if(nrChannels == 3) {
+        }
+        else if (nrChannels == 3)
+        {
             format = GL_RGB;
-        } else if(nrChannels == 4) {
+        }
+        else if (nrChannels == 4)
+        {
             format = GL_RGBA;
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
+
+        m_width = width;
+        m_height = height;
+    }
+    else
+    {
         std::cerr << "Failed to load texture" << std::endl;
     }
 

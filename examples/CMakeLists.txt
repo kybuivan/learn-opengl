@@ -25,6 +25,7 @@ set(EXAMPLES
     textures
 	transformations
 	coordinate_systems
+	cameras
 )
 
 # Function for building single example
