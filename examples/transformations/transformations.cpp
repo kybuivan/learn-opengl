@@ -73,7 +73,7 @@ int main()
     Shader shader(vertPath.c_str(), fragPath.c_str());
 
     // load and create a texture
-    std::string texturePath = std::string(SOURCE_DIR) + "/transformations/container.jpg";
+    std::string texturePath = std::string(SOURCE_DIR) + "/data/container.jpg";
     Texture texture(texturePath.c_str());
 
     float scale = 1.0f;

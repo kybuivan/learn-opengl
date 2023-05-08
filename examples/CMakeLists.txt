@@ -24,6 +24,7 @@ set(EXAMPLES
     shaders
     textures
 	transformations
+	coordinate_systems
 )
 
 # Function for building single example

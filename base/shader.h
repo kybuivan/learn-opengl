@@ -1,6 +1,6 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
-
+#include "utils.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -18,6 +18,7 @@ public:
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;
     void setFloat(const std::string &name, float value) const;
+    void setMat4(const std::string &name, const glm::mat4) const;
 
     GLuint getProgramID() const { return m_programID; }
 private:
