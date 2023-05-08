@@ -76,8 +76,8 @@ Window::Window(const char *name, int width, int height, bool resizable) noexcept
             auto x = 0.0;
             auto y = 0.0;
             glfwGetCursorPos(self->handle(), &x, &y);
-            if (auto &&cb = self->_mouse_button_callback) {
-                cb(button, action, static_cast<float>(x), static_cast<float>(y));
+            if (auto &&cb = self->_mouse_callback) {
+                cb(static_cast<float>(x), static_cast<float>(y));
             }
         }
     });
@@ -140,8 +140,8 @@ bool Window::should_close() const noexcept {
     return glfwWindowShouldClose(_handle);
 }
 
-Window &Window::set_mouse_callback(Window::MouseButtonCallback cb) noexcept {
-    _mouse_button_callback = std::move(cb);
+Window &Window::set_mouse_callback(Window::MouseCallback cb) noexcept {
+    _mouse_callback = std::move(cb);
     return *this;
 }
 
