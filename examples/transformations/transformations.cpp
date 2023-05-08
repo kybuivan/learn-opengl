@@ -3,6 +3,7 @@
 #include "config.h"
 #include "shader.h"
 #include "texture.h"
+#include "utils.h"
 
 // An array of 3 vectors which represents 3 vertices
 float vertices[] = {
@@ -22,7 +23,7 @@ unsigned int indices[] = {
 int main()
 {
     // Create a window
-    Window window("textures", 800, 600, true);
+    Window window("transformations", 800, 600, true);
 
     // Set callbacks
 	window.set_key_callback([&](int key, int action) noexcept {
@@ -67,20 +68,42 @@ int main()
     glEnableVertexAttribArray(2);
 
     // Create and compile our GLSL program from the shaders
-    std::string vertPath = std::string(SOURCE_DIR) + "/textures/textures.vert";
-    std::string fragPath = std::string(SOURCE_DIR) + "/textures/textures.frag";
+    std::string vertPath = std::string(SOURCE_DIR) + "/transformations/transformations.vert";
+    std::string fragPath = std::string(SOURCE_DIR) + "/transformations/transformations.frag";
     Shader shader(vertPath.c_str(), fragPath.c_str());
 
     // load and create a texture
-    std::string texturePath = std::string(SOURCE_DIR) + "/textures/container.jpg";
+    std::string texturePath = std::string(SOURCE_DIR) + "/transformations/container.jpg";
     Texture texture(texturePath.c_str());
 
-	window.run([&]{
+    float scale = 1.0f;
+    float rotate = 90.0f;
+    float translateX = 0.0f;
+    float translateY = 0.0f;
+    float shearX = 0.0f;
+    float shearY = 0.0f;
+    glm::mat4 transform = glm::mat4(1.0f);
+    window.run([&]{
         texture.bind();
         glBindVertexArray(VAO);
         shader.use();
+        ImGui::Begin("Settings");
+        ImGui::SliderFloat("scale", &scale, 0.0f, 2.0f);
+        ImGui::SliderFloat("rotate", &rotate, -360.0f, 360.0f, "%.0f");
+        ImGui::SliderFloat("translate x", &translateX, -1.0f, 1.0f);
+        ImGui::SliderFloat("translate y", &translateY, -1.0f, 1.0f);
+        ImGui::End();
+        
+        transform = glm::scale(transform, glm::vec3(scale, scale, scale));
+        transform = glm::translate(transform, glm::vec3(translateX, translateY, 0.0f));
+        transform = glm::rotate(transform, glm::radians(rotate), glm::vec3(0.0, 0.0, 1.0));
+        unsigned int transformLoc = glGetUniformLocation(shader.getProgramID(), "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &transform[0][0]);
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        transform = glm::mat4(1.0f);
     });
+
 
     // Cleanup VBO and shader
     glDeleteVertexArrays(1, &VAO);
