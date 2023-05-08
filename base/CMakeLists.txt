@@ -4,6 +4,7 @@ include(imgui)
 include(glfw)
 include(glad2)
 include(stb)
+include(glm)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -23,5 +24,6 @@ target_link_libraries(base PUBLIC
   glfw
   glad
   stb
+  glm::glm
   imgui::imgui
 )

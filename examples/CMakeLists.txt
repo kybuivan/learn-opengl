@@ -23,6 +23,7 @@ set(EXAMPLES
     triangle
     shaders
     textures
+	transformations
 )
 
 # Function for building single example
