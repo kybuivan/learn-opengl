@@ -4,7 +4,7 @@
 #include <fstream>
 #include <stb_image.h>
 
-Texture::Texture(const char *path)
+Texture::Texture(const char *path, const std::string &type)
 {
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -16,9 +16,9 @@ Texture::Texture(const char *path)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     // Set texture filtering parameters
     // Set texture filtering to nearest neighbor interpolation
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     // Set texture filtering to nearest neighbor interpolation
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Load image, create texture and generate mipmaps
     int width, height, nrChannels;
@@ -26,17 +26,13 @@ Texture::Texture(const char *path)
     if (data)
     {
         GLenum format;
-        if (nrChannels == 1)
+        // Set the Correct Channel Format
+        switch (nrChannels)
         {
-            format = GL_RED;
-        }
-        else if (nrChannels == 3)
-        {
-            format = GL_RGB;
-        }
-        else if (nrChannels == 4)
-        {
-            format = GL_RGBA;
+            case 1 : format = GL_ALPHA;     break;
+            case 2 : format = GL_LUMINANCE16_EXT; break;
+            case 3 : format = GL_RGB;       break;
+            case 4 : format = GL_RGBA;      break;
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
@@ -50,6 +46,8 @@ Texture::Texture(const char *path)
         std::cerr << "Failed to load texture" << std::endl;
     }
 
+    m_type = type;
+    m_path = path;
     stbi_image_free(data);
 }
 

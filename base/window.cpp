@@ -14,17 +14,17 @@ Window::Window(const char *name, int width, int height, bool resizable) noexcept
     //: _context{GLFWContext::retain()},
     :_resizable{resizable}
 {
-	// Setup window
-	if (!glfwInit())
-	{
-		logger("Err glfw init");
-		return;
-	}
+    // Setup window
+    if (!glfwInit())
+    {
+        logger("Err glfw init");
+        return;
+    }
 
-	// GL 3.0 + GLSL 130
-	const char* glsl_version = "#version 130";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    // GL 3.0 + GLSL 130
+    const char* glsl_version = "#version 130";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, resizable);
@@ -35,35 +35,35 @@ Window::Window(const char *name, int width, int height, bool resizable) noexcept
         const char *error = nullptr;
         glfwGetError(&error);
         logger("Failed to create GLFW window.");
-		exit(-1);
+        exit(-1);
     }
     glfwMakeContextCurrent(_handle);
     glfwSwapInterval(0);// disable vsync
 
     int version = gladLoadGL(glfwGetProcAddress);
-	if (version == 0)
-	{
-		logger("Failed to initialize OpenGL context");
-		exit(-1);
-	}
+    if (version == 0)
+    {
+        logger("Failed to initialize OpenGL context");
+        exit(-1);
+    }
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-	ImGui::StyleColorsDark();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;           // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+    ImGui::StyleColorsDark();
 
-	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-	ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
     ImGui_ImplGlfw_InitForOpenGL(_handle, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -82,12 +82,12 @@ Window::Window(const char *name, int width, int height, bool resizable) noexcept
         }
     });
     // glfwSetCursorPosCallback(_handle, [](GLFWwindow *window, double x, double y) noexcept {
-	// 	if (ImGui::GetIO().WantCaptureMouse) {// ImGui is handling the keyboard
+    //     if (ImGui::GetIO().WantCaptureMouse) {// ImGui is handling the keyboard
     //         ImGui_ImplGlfw_CursorPosCallback(window, x, y);
     //     } else {
-	// 		auto self = static_cast<Window *>(glfwGetWindowUserPointer(window));
-	// 		if (auto &&cb = self->_cursor_position_callback) { cb(static_cast<float>(x), static_cast<float>(y)); }
-	// 	}
+    //         auto self = static_cast<Window *>(glfwGetWindowUserPointer(window));
+    //         if (auto &&cb = self->_cursor_position_callback) { cb(static_cast<float>(x), static_cast<float>(y)); }
+    //     }
     // });
     glfwSetWindowSizeCallback(_handle, [](GLFWwindow *window, int width, int height) noexcept {
         auto self = static_cast<Window *>(glfwGetWindowUserPointer(window));
@@ -249,14 +249,14 @@ void Window::_end_frame() noexcept {
         glViewport(0, 0, display_w, display_h);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
 
         glfwSwapBuffers(_handle);
     }

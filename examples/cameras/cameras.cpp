@@ -152,8 +152,8 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
     // Create and compile our GLSL program from the shaders
-    std::string vertPath = std::string(SOURCE_DIR) + "/coordinate_systems/coordinate_systems.vert";
-    std::string fragPath = std::string(SOURCE_DIR) + "/coordinate_systems/coordinate_systems.frag";
+    std::string vertPath = std::string(SOURCE_DIR) + "/cameras/cameras.vert";
+    std::string fragPath = std::string(SOURCE_DIR) + "/cameras/cameras.frag";
     Shader shader(vertPath.c_str(), fragPath.c_str());
 
     // load and create a texture

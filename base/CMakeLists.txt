@@ -5,6 +5,7 @@ include(glfw)
 include(glad2)
 include(stb)
 include(glm)
+include(assimp)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,6 +16,8 @@ add_library(base STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/texture.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/mesh.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/model.cpp
 )
 
 target_include_directories(base PUBLIC
@@ -27,4 +30,5 @@ target_link_libraries(base PUBLIC
   stb
   glm::glm
   imgui::imgui
+  assimp::assimp
 )
