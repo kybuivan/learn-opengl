@@ -2,11 +2,12 @@
 #define _TEXTURE_H_
 
 #include <glad/gl.h>
+#include <string>
 
 class Texture
 {
 public:
-    Texture(const char *path);
+    Texture(const char *path, const std::string &type = "");
     ~Texture();
 
     void bind() const;
@@ -16,10 +17,14 @@ public:
 
     GLuint getTextureID() const { return m_textureID; }
 
+    std::string getType() const { return m_type; }
+    std::string getPath() const { return m_path; }
 private:
     GLuint m_textureID;
-    int m_width;
-    int m_height;
+    int m_width = 0;
+    int m_height = 0;
+    std::string m_type = "";
+    std::string m_path = "";
 };
 
 #endif // _TEXTURE_H_

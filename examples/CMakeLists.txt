@@ -26,6 +26,7 @@ set(EXAMPLES
 	transformations
 	coordinate_systems
 	cameras
+	models
 )
 
 # Function for building single example
